@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 
 import openstack
-import json
 import sys
-import time
-import requests
 from urllib.parse import urljoin
 
 # ----------------------------------------------------------------------

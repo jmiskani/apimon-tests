@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 
 import openstack
-import json
 import sys
-import time
-import requests
 from urllib.parse import urljoin
 
 # ----------------------------------------------------------------------
@@ -56,7 +53,10 @@ token = conn.session.get_token()
 # Trigger VBS restore via vendor API (returns job_id)
 # ----------------------------------------------------------------------
 
-restore_url = urljoin(vbs_service, f"/v2/{conn.current_project_id}/cloudbackups/{backup_id}/restore")
+restore_url = urljoin(
+    vbs_service,
+    f"/v2/{conn.current_project_id}/cloudbackups/{backup_id}/restore"
+    )
 
 payload = {
     "restore": {
@@ -64,7 +64,7 @@ payload = {
     }
 }
 
-# Optional new name (Cinder ignores name on in-place restore, but EVS vendor API allows it)
+# Optional new name
 if new_name:
     payload["restore"]["name"] = new_name
 
@@ -74,7 +74,6 @@ headers = {
 
 print(f"Requesting restore from VBS vendor API: {restore_url}")
 
-#resp = requests.post(restore_url, json=payload, headers=headers)
 resp = conn.session.post(restore_url, json=payload, headers=headers)
 resp.raise_for_status()
 
